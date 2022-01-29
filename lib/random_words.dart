@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
 class RandomWords extends StatefulWidget {
+  const RandomWords({Key? key}) : super(key: key);
+
   @override
   RandomWordsState createState() => RandomWordsState();
 }
 
 class RandomWordsState extends State<RandomWords> {
   final _randomWordPairs = <WordPair>[];
-  final _savedWordPairs = Set<WordPair>();
+  final _savedWordPairs = <WordPair>{};
 
   Widget _buildList() {
     return ListView.builder(
       padding: const EdgeInsets.all(16.0),
       itemBuilder: (context, item) {
-        if (item.isOdd) return Divider();
+        if (item.isOdd) return const Divider();
 
         final index = item ~/ 2;
 
@@ -31,7 +33,7 @@ class RandomWordsState extends State<RandomWords> {
     final alreadySaved = _savedWordPairs.contains(pair);
 
     return ListTile(
-        title: Text(pair.asPascalCase, style: TextStyle(fontSize: 18.0)),
+        title: Text(pair.asPascalCase, style: const TextStyle(fontSize: 18.0)),
         trailing: Icon(alreadySaved ? Icons.favorite : Icons.favorite_border,
             color: alreadySaved ? Colors.red : null),
         onTap: () {
@@ -50,24 +52,26 @@ class RandomWordsState extends State<RandomWords> {
         .push(MaterialPageRoute(builder: (BuildContext context) {
       final Iterable<ListTile> tiles = _savedWordPairs.map((WordPair pair) {
         return ListTile(
-            title: Text(pair.asPascalCase, style: TextStyle(fontSize: 16.0)));
+            title: Text(pair.asPascalCase,
+                style: const TextStyle(fontSize: 16.0)));
       });
 
       final List<Widget> divided =
           ListTile.divideTiles(context: context, tiles: tiles).toList();
 
       return Scaffold(
-          appBar: AppBar(title: Text('Saved WordPairs')),
+          appBar: AppBar(title: const Text('Saved WordPairs')),
           body: ListView(children: divided));
     }));
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('WordPair Generator'),
+          title: const Text('WordPair Generator'),
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.list), onPressed: _pushSaved)
+            IconButton(icon: const Icon(Icons.list), onPressed: _pushSaved)
           ],
         ),
         body: _buildList());
